@@ -74,7 +74,7 @@ module.exports.buildPrettifier = (prettierConfig) => {
   }
 
   return (text) => {
-    return prettier.format(text, config);
+    return prettier.format(text, config || { trailingComma: "none", semi: false, singleQuote: true});
   }
 }
 
