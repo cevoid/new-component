@@ -1,26 +1,20 @@
 {
-  "name": "new-component",
+  "name": "@cevoid/new-component",
   "version": "3.0.2",
-  "description": "CLI for creating new React components",
-  "homepage": "https://github.com/joshwcomeau/new-component",
+  "description": "CLI for creating new React components, forked from https://github.com/joshwcomeau/new-component",
+  "homepage": "https://github.com/cevoid/new-component",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshwcomeau/new-component"
+    "url": "https://github.com/cevoid/new-component"
   },
   "bugs": {
-    "url": "https://github.com/joshwcomeau/new-component/issues"
+    "url": "https://github.com/cevoid/new-component/issues"
   },
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "react",
-    "reactjs",
-    "cli",
-    "component",
-    "boilerplate"
-  ],
+  "keywords": [],
   "author": "Joshua Comeau",
   "license": "MIT",
   "bin": {

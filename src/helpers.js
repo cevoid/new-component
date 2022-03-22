@@ -32,7 +32,7 @@ module.exports.getConfig = () => {
   const defaults = {
     type: 'functional',
     dir: 'src/components',
-    extension: 'js',
+    extension: 'ts',
   };
 
   const globalOverrides = requireOptional(

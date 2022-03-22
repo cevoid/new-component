@@ -46,7 +46,7 @@ program
   )
   .option(
     '-x, --extension <fileExtension>',
-    'Which file extension to use for the component (default: "js")',
+    'Which file extension to use for the component (default: "ts")',
     config.extension
   )
   .parse(process.argv);
@@ -55,11 +55,15 @@ const [componentName] = program.args;
 
 // Find the path to the selected template file.
 const templatePath = `./templates/${program.type}.js`;
+const testTemplatePath = `./templates/test.js`;
 
 // Get all of our file paths worked out, for the user's project.
 const componentDir = `${program.dir}/${componentName}`;
+const testDir = `${program.dir}/${componentName}/__test__`;
 const filePath = `${componentDir}/${componentName}.${program.extension}`;
 const indexPath = `${componentDir}/index.${program.extension}`;
+const helpersPath = `${componentDir}/${componentName}.helpers.${program.extension}`;
+const testPath = `${componentDir}/__test__/${componentName}.test.${program.extension}`;
 
 // Our index template is super straightforward, so we'll just inline it for now.
 const indexTemplate = prettify(`\
@@ -95,36 +99,33 @@ if (fs.existsSync(fullPathToComponentDir)) {
   process.exit(0);
 }
 
-// Start by creating the directory that our component lives in.
-mkDirPromise(componentDir)
-  .then(() => readFilePromiseRelative(templatePath))
-  .then((template) => {
+const run = async () => {
+  try {
+    await mkDirPromise(componentDir)
     logItemCompletion('Directory created.');
-    return template;
-  })
-  .then((template) =>
-    // Replace our placeholders with real data (so far, just the component name)
-    template.replace(/COMPONENT_NAME/g, componentName)
-  )
-  .then((template) =>
-    // Format it using prettier, to ensure style consistency, and write to file.
-    writeFilePromise(filePath, prettify(template))
-  )
-  .then((template) => {
+
+    // Component file
+    const template = await readFilePromiseRelative(templatePath).then(template => template.replace(/COMPONENT_NAME/g, componentName))
+    await writeFilePromise(filePath, prettify(template))
     logItemCompletion('Component built and saved to disk.');
-    return template;
-  })
-  .then((template) =>
-    // We also need the `index.js` file, which allows easy importing.
-    writeFilePromise(indexPath, prettify(indexTemplate))
-  )
-  .then((template) => {
+
+    // Helpers file
+    await writeFilePromise(helpersPath, '')
+    logItemCompletion('Helpers file built and saved to disk.');
+
+    await writeFilePromise(indexPath, prettify(indexTemplate))
     logItemCompletion('Index file built and saved to disk.');
-    return template;
-  })
-  .then((template) => {
+
+    // Test file
+    await mkDirPromise(testDir)
+    const testTemplate = await readFilePromiseRelative(testTemplatePath).then(template => template.replace(/COMPONENT_NAME/g, componentName))
+    await writeFilePromise(testPath, prettify(testTemplate))
+    logItemCompletion('Test file built and saved to disk.');
+
     logConclusion();
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+run()

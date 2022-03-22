@@ -1,8 +1,11 @@
-import React from 'react';
+import styled from 'styled-components';
 
+type Props = {}
 
-const COMPONENT_NAME = () => {
-  return <div />;
+export default function COMPONENT_NAME (props: Props) {
+  return <Style>COMPONENT_NAME</Style>;
 };
 
-export default COMPONENT_NAME;
+const Style = styled.div``
+
+
