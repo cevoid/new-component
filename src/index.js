@@ -60,15 +60,15 @@ const testTemplatePath = `./templates/test.js`;
 // Get all of our file paths worked out, for the user's project.
 const componentDir = `${program.dir}/${componentName}`;
 const testDir = `${program.dir}/${componentName}/__test__`;
-const filePath = `${componentDir}/${componentName}.${program.extension}`;
+const filePath = `${componentDir}/${componentName}.${program.extension}x`;
 const indexPath = `${componentDir}/index.${program.extension}`;
 const helpersPath = `${componentDir}/${componentName}.helpers.${program.extension}`;
 const testPath = `${componentDir}/__test__/${componentName}.test.${program.extension}`;
 
 // Our index template is super straightforward, so we'll just inline it for now.
 const indexTemplate = prettify(`\
-export * from './${componentName}';
-export { default } from './${componentName}';
+export * from './${componentName}'
+export { default } from './${componentName}'
 `);
 
 logIntro({ name: componentName, dir: componentDir, type: program.type });
@@ -110,7 +110,7 @@ const run = async () => {
     logItemCompletion('Component built and saved to disk.');
 
     // Helpers file
-    await writeFilePromise(helpersPath, '')
+    await writeFilePromise(helpersPath, prettify('export {}'))
     logItemCompletion('Helpers file built and saved to disk.');
 
     await writeFilePromise(indexPath, prettify(indexTemplate))
